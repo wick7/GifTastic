@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Space Stuff</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+
+<style type="text/css">
+
+    html, body {
+        padding: 0;
+        margin: 0;
+    }
+
+    button,
+    div,
+    form,
+    input {
+      margin: 10px;
+    }
+
+    .col-lg-3 {
+        margin: 15px;
+    }
+
+    .gif {
+        width: 100%; 
+        height: 200px;
+    }
+
+    @media screen and (max-width: 600px) and (orientation: portrait) {
+        .gif {
+            height: 400px;
+        }
+
+        html, body {
+            margin: 20px;
+        }
+    }
+
+  </style>
+
+<body>
+
+  <div class="container">
+    <h1>Space Search</h1>
+
+    <div id="buttons-view"></div>
+
+    <form id="movie-form">
+      <label for="movie-input">Anything Outer Space or Extraterrestrial Like!</label>
+      <input type="text" id="user-input"><br>
+
+      <!-- Button triggers new movie to be added -->
+      <input id="add-input" type="submit" value="Add something">
+    </form>
+
+    <!-- Movies will get dumped here -->
+    <div id="movies-view" class="container"></div>
+
+  </div>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    
+    var movies = ["The Matrix", "The Notebook", "Mr. Nobody", "The Lion King"];
+
+      // var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + 'dogs' + "&api_key=xT4uQulxzV39haRFjG&limit=10";
+
+    
+
+      function displayMovieInfo() {
+
+      $("#movies-view").html('')
+      var input = $(this).attr('data-name');
+      var queryURL = 'http://api.giphy.com/v1/gifs/search?q=' + input + '&api_key=vfza6OdQBaslr1Oz9FIYd5vwqb9cdnbi';
+
+        $.ajax({
+          url: queryURL,
+          method: "GET"
+      }).then(function(response) {
+        
+          console.log(response)
+          
+          for (var i=0; i < response.data.length; i++) {
+
+              if((i % 4) == 0) {
+                  var row = $("<div class=\"row\">");
+                  $("#movies-view").append(row);
+              }else {
+                  var both = $("<div class=\"col-lg-3 col-sm-12\">");
+                  var rating =$("<p>");
+                  var image = $("<img>");
+                  rating.text('Rating: ' + response.data[i].rating);
+                  image.attr('src', response.data[i].images.fixed_height.url);
+                  image.attr('class', 'gif');
+                  $(both).append(rating);
+                  $(both).append(image);
+                  $(row).append(both);
+              }
+          }
+      });
+        
+
+      }
+
+    function renderButtons() {
+
+      $("#buttons-view").empty();
+
+      for (var i = 0; i < movies.length; i++) {
+
+        var a = $("<button>");
+        a.addClass("movie");
+        a.attr("data-name", movies[i]);
+        a.text(movies[i]);
+        $("#buttons-view").append(a);
+      }
+    }
+
+    $("#add-input").on("click", function(event) {
+      event.preventDefault();
+      var movie = $("#user-input").val().trim();
+
+      if(movies.includes(movie) === false){
+        movies.push(movie);
+        renderButtons();
+      }else{
+        alert('Button Already Exists! Choose a new label.')
+        var movie = $("#user-input").val('');
+      }
+
+    });
+
+    $(document).on("click", ".movie", displayMovieInfo);
+
+    renderButtons();
+  </script>
+
+
+</body>
+
+</html>

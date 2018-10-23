@@ -50,11 +50,12 @@
     <div id="buttons-view"></div>
 
     <form id="movie-form">
-      <label for="movie-input">Anything Outer Space or Extraterrestrial Like!</label>
-      <input type="text" id="user-input"><br>
-
+      <label for="movie-input">Add Something Outer Space Related: <br> Suggestions: Orville, NASA, Galaxy, Space Ship.</label>
+      
+      <input type="text" id="user-input">
       <!-- Button triggers new movie to be added -->
       <input id="add-input" type="submit" value="Add something">
+      
     </form>
 
     <!-- Movies will get dumped here -->
@@ -66,7 +67,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript">
     
-    var movies = ["The Matrix", "The Notebook", "Mr. Nobody", "The Lion King"];
+    var movies = ['Space', 'Mars', 'Earth', 'Star Trek', 'Asteroids', 'Constellation', 'Eclipse', 'Light Pillars', 'Meteorite', 'Orbit', 'Northern Lights', 'Astronaut‎' ];
 
       // var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + 'dogs' + "&api_key=xT4uQulxzV39haRFjG&limit=10";
 
@@ -95,8 +96,11 @@
                   var rating =$("<p>");
                   var image = $("<img>");
                   rating.text('Rating: ' + response.data[i].rating);
-                  image.attr('src', response.data[i].images.fixed_height.url);
+                  image.attr('src', response.data[i].images.fixed_height_still.url);
                   image.attr('class', 'gif');
+                  image.attr('data-state', 'still');
+                  image.attr('data-still', response.data[i].images.fixed_height_still.url);
+                  image.attr('data-animate', response.data[i].images.fixed_height.url);
                   $(both).append(rating);
                   $(both).append(image);
                   $(row).append(both);
@@ -106,6 +110,7 @@
         
 
       }
+
 
     function renderButtons() {
 
@@ -135,9 +140,27 @@
 
     });
 
+    
+    renderButtons();
+
     $(document).on("click", ".movie", displayMovieInfo);
 
-    renderButtons();
+    $(document).on("click", ".gif", function() {
+        console.log(this)
+      var state = $(this).attr("data-state");
+      var dataStill = $(this).attr("data-still");
+      var dataAnimate = $(this).attr("data-animate");
+      console.log(state)
+
+      if(state === 'still'){
+        $(this).attr('src', dataAnimate);
+        $(this).attr('data-state', 'animate');
+      } else if(state === 'animate') {
+        $(this).attr('src', dataStill);
+        $(this).attr('data-state', 'still');
+      }
+    });
+
   </script>
 
 

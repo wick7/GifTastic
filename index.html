@@ -53,12 +53,11 @@
       <label for="movie-input">Add Something Outer Space Related: <br> Suggestions: Orville, NASA, Galaxy, Space Ship.</label>
       
       <input type="text" id="user-input">
-      <!-- Button triggers new movie to be added -->
+    
       <input id="add-input" type="submit" value="Add something">
       
     </form>
 
-    <!-- Movies will get dumped here -->
     <div id="movies-view" class="container"></div>
 
   </div>
@@ -67,11 +66,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript">
     
-    var movies = ['Space', 'Mars', 'Earth', 'Star Trek', 'Asteroids', 'Constellation', 'Eclipse', 'Light Pillars', 'Meteorite', 'Orbit', 'Northern Lights', 'Astronaut‎' ];
+    var movies = ['Space', 'Mars', 'Earth', 'Star Trek', 'Asteroids', 'Neil Armstrong', 'Constellation', 'Eclipse', 'Light Pillars', 'Meteorite', 'Astronaut‎ Sally Ride', 'Orbit', 'Northern Lights', 'Astronaut‎' ];
 
-      // var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + 'dogs' + "&api_key=xT4uQulxzV39haRFjG&limit=10";
-
-    
 
       function displayMovieInfo() {
 
@@ -88,12 +84,24 @@
           
           for (var i=0; i < response.data.length; i++) {
 
-              if((i % 4) == 0) {
+              if((i % 3) == 0) {
                   var row = $("<div class=\"row\">");
                   $("#movies-view").append(row);
+                  var both = $("<div class=\"col-lg-3 col-sm-12\">");
+                  var rating = $("<p>");
+                  var image = $("<img>");
+                  rating.text('Rating: ' + response.data[i].rating);
+                  image.attr('src', response.data[i].images.fixed_height_still.url);
+                  image.attr('class', 'gif');
+                  image.attr('data-state', 'still');
+                  image.attr('data-still', response.data[i].images.fixed_height_still.url);
+                  image.attr('data-animate', response.data[i].images.fixed_height.url);
+                  $(both).append(rating);
+                  $(both).append(image);
+                  $(row).append(both);
               }else {
                   var both = $("<div class=\"col-lg-3 col-sm-12\">");
-                  var rating =$("<p>");
+                  var rating = $("<p>");
                   var image = $("<img>");
                   rating.text('Rating: ' + response.data[i].rating);
                   image.attr('src', response.data[i].images.fixed_height_still.url);
@@ -106,9 +114,10 @@
                   $(row).append(both);
               }
           }
+
+          
       });
         
-
       }
 
 

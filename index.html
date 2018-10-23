@@ -21,6 +21,10 @@
       margin: 10px;
     }
 
+    /* h1 {
+        margin-left: 10px;
+    } */
+
     .col-lg-3 {
         margin: 15px;
     }
@@ -45,20 +49,20 @@
 <body>
 
   <div class="container">
-    <h1>Space Search</h1>
+    <h1 class="text-center">Space Search</h1>
 
     <div id="buttons-view"></div>
 
     <form id="movie-form">
-      <label for="movie-input">Add Something Outer Space Related: <br> Suggestions: Orville, NASA, Galaxy, Space Ship.</label>
+      <label for="movie-input">Add Something Astrologically Related: <br> Suggestions: Orville, NASA, Galaxy, Space Ship.</label>
       
       <input type="text" id="user-input">
     
-      <input id="add-input" type="submit" value="Add something">
+      <input id="add-input" type="submit" value="Add something" class="btn btn-success">
       
     </form>
 
-    <div id="movies-view" class="container"></div>
+    <div id="view" class="container"></div>
 
   </div>
 
@@ -66,12 +70,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript">
     
-    var movies = ['Space', 'Mars', 'Earth', 'Star Trek', 'Asteroids', 'Neil Armstrong', 'Constellation', 'Eclipse', 'Light Pillars', 'Meteorite', 'Astronaut‎ Sally Ride', 'Orbit', 'Northern Lights', 'Astronaut‎' ];
+    var movies = ['Space', 'Mars', 'Neil Degrasse Tyson', 'Earth', 'Star Trek', 'Asteroids', 'Neil Armstrong', 'Constellation', 'Eclipse', 'Universe', 'The Cosmos', 'Meteorite', 'Astronaut‎ Sally Ride', 'Orbit', 'Northern Lights', 'Astronaut‎', 'Carl Sagan' ];
 
 
-      function displayMovieInfo() {
+      function displayGifs() {
 
-      $("#movies-view").html('')
+      $("#view").html('')
       var input = $(this).attr('data-name');
       var queryURL = 'http://api.giphy.com/v1/gifs/search?q=' + input + '&api_key=vfza6OdQBaslr1Oz9FIYd5vwqb9cdnbi';
 
@@ -86,7 +90,7 @@
 
               if((i % 3) == 0) {
                   var row = $("<div class=\"row\">");
-                  $("#movies-view").append(row);
+                  $("#view").append(row);
                   var both = $("<div class=\"col-lg-3 col-sm-12\">");
                   var rating = $("<p>");
                   var image = $("<img>");
@@ -129,6 +133,8 @@
 
         var a = $("<button>");
         a.addClass("movie");
+        a.addClass('btn');
+        a.addClass('btn-primary');
         a.attr("data-name", movies[i]);
         a.text(movies[i]);
         $("#buttons-view").append(a);
@@ -152,7 +158,7 @@
     
     renderButtons();
 
-    $(document).on("click", ".movie", displayMovieInfo);
+    $(document).on("click", ".movie", displayGifs);
 
     $(document).on("click", ".gif", function() {
         console.log(this)

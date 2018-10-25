@@ -4,180 +4,36 @@
 <head>
   <meta charset="utf-8">
   <title>Space Stuff</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+
+  <link rel="stylesheet" href="assets/style.css">
 </head>
 
-<style type="text/css">
-
-    html, body {
-        padding: 0;
-        margin: 0;
-    }
-
-    button,
-    div,
-    form,
-    input {
-      margin: 10px;
-    }
-
-    /* h1 {
-        margin-left: 10px;
-    } */
-
-    .col-lg-3 {
-        margin: 15px;
-    }
-
-    .gif {
-        width: 100%; 
-        height: 200px;
-    }
-
-    @media screen and (max-width: 600px) and (orientation: portrait) {
-        .gif {
-            height: 400px;
-        }
-
-        html, body {
-            margin: 20px;
-        }
-    }
-
-  </style>
-
 <body>
+  <div class="container-fluid">
+    <h1 class="text-center"><i class="fa fa-rocket" aria-hidden="true"></i> Space Search <i class="fa fa-moon-o"
+        aria-hidden="true"></i></h1>
+    <div id="buttons-view" class="text-center"></div>
 
-  <div class="container">
-    <h1 class="text-center">Space Search</h1>
+    <form id="movie-form" class="text-center">
+      <span class="info-text"><label for="movie-input">Add Something Astrologically Related: <br> Suggestions: Orville, NASA, Galaxy, Space Ship.</label></span>
 
-    <div id="buttons-view"></div>
-
-    <form id="movie-form">
-      <label for="movie-input">Add Something Astrologically Related: <br> Suggestions: Orville, NASA, Galaxy, Space Ship.</label>
-      
       <input type="text" id="user-input">
-    
+
       <input id="add-input" type="submit" value="Add something" class="btn btn-success">
-      
+
     </form>
 
-    <div id="view" class="container"></div>
+    <div id="view" class="container-fluid"></div>
 
   </div>
 
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script type="text/javascript">
-    
-    var movies = ['Space', 'Mars', 'Neil Degrasse Tyson', 'Earth', 'Star Trek', 'Asteroids', 'Neil Armstrong', 'Constellation', 'Eclipse', 'Universe', 'The Cosmos', 'Meteorite', 'Astronaut‎ Sally Ride', 'Orbit', 'Northern Lights', 'Astronaut‎', 'Carl Sagan' ];
-
-
-      function displayGifs() {
-
-      $("#view").html('')
-      var input = $(this).attr('data-name');
-      var queryURL = 'http://api.giphy.com/v1/gifs/search?q=' + input + '&api_key=vfza6OdQBaslr1Oz9FIYd5vwqb9cdnbi';
-
-        $.ajax({
-          url: queryURL,
-          method: "GET"
-      }).then(function(response) {
-        
-          console.log(response)
-          
-          for (var i=0; i < response.data.length; i++) {
-
-              if((i % 3) == 0) {
-                  var row = $("<div class=\"row\">");
-                  $("#view").append(row);
-                  var both = $("<div class=\"col-lg-3 col-sm-12\">");
-                  var rating = $("<p>");
-                  var image = $("<img>");
-                  rating.text('Rating: ' + response.data[i].rating);
-                  image.attr('src', response.data[i].images.fixed_height_still.url);
-                  image.attr('class', 'gif');
-                  image.attr('data-state', 'still');
-                  image.attr('data-still', response.data[i].images.fixed_height_still.url);
-                  image.attr('data-animate', response.data[i].images.fixed_height.url);
-                  $(both).append(rating);
-                  $(both).append(image);
-                  $(row).append(both);
-              }else {
-                  var both = $("<div class=\"col-lg-3 col-sm-12\">");
-                  var rating = $("<p>");
-                  var image = $("<img>");
-                  rating.text('Rating: ' + response.data[i].rating);
-                  image.attr('src', response.data[i].images.fixed_height_still.url);
-                  image.attr('class', 'gif');
-                  image.attr('data-state', 'still');
-                  image.attr('data-still', response.data[i].images.fixed_height_still.url);
-                  image.attr('data-animate', response.data[i].images.fixed_height.url);
-                  $(both).append(rating);
-                  $(both).append(image);
-                  $(row).append(both);
-              }
-          }
-
-          
-      });
-        
-      }
-
-
-    function renderButtons() {
-
-      $("#buttons-view").empty();
-
-      for (var i = 0; i < movies.length; i++) {
-
-        var a = $("<button>");
-        a.addClass("movie");
-        a.addClass('btn');
-        a.addClass('btn-primary');
-        a.attr("data-name", movies[i]);
-        a.text(movies[i]);
-        $("#buttons-view").append(a);
-      }
-    }
-
-    $("#add-input").on("click", function(event) {
-      event.preventDefault();
-      var movie = $("#user-input").val().trim();
-
-      if(movies.includes(movie) === false){
-        movies.push(movie);
-        renderButtons();
-      }else{
-        alert('Button Already Exists! Choose a new label.')
-        var movie = $("#user-input").val('');
-      }
-
-    });
-
-    
-    renderButtons();
-
-    $(document).on("click", ".movie", displayGifs);
-
-    $(document).on("click", ".gif", function() {
-        console.log(this)
-      var state = $(this).attr("data-state");
-      var dataStill = $(this).attr("data-still");
-      var dataAnimate = $(this).attr("data-animate");
-      console.log(state)
-
-      if(state === 'still'){
-        $(this).attr('src', dataAnimate);
-        $(this).attr('data-state', 'animate');
-      } else if(state === 'animate') {
-        $(this).attr('src', dataStill);
-        $(this).attr('data-state', 'still');
-      }
-    });
-
-  </script>
-
+  <script src="assets/app.js" type="text/javascript"></script>
 
 </body>
 

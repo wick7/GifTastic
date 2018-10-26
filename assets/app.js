@@ -72,7 +72,10 @@ $("#add-input").on("click", function (event) {
     event.preventDefault();
     var userInput = $("#user-input").val().trim();
 
-    if (array.includes(userInput) === false) {
+      if(userInput === '') {
+        alert('Choose a label. No blank spaces!')
+        var userInput = $("#user-input").val('');
+    } else if (array.includes(userInput) === false) {
         array.push(userInput);
         renderButtons();
         var userInput = $("#user-input").val('');
